@@ -9,8 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
-import java.util.Random;
-import java.time.LocalDateTime;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class HelloProducer {
     private static final Logger logger = LogManager.getLogger();
@@ -25,17 +26,29 @@ public class HelloProducer {
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
         KafkaProducer<Integer, String> producer = new KafkaProducer<>(props);
-        
-        Random random = new Random();
 
-        logger.info("Start sending messages...");
-        for (int i = 1; i <= AppConfigs.numEvents; i++) {
-            LocalDateTime now = LocalDateTime.now();
-            producer.send(new ProducerRecord<>(AppConfigs.topicName, i, "{\"TransactionTime\"=\"" + now + "\",\"Merchant\"=\"MERCHANT" + random.nextInt(10) + "\",\"Div\"=\"" + random.nextInt(10) + "001\"" + ",\"Country\"=\"UK\",\"ResponseTime\"=" + String.format("%.2f",random.nextDouble()) + "}"));
-        }
+        BufferedReader reader;
+
+		try {
+			reader = new BufferedReader(new FileReader("SampleTransactions.txt"));
+			String line = reader.readLine();
+
+            int i=1;
+            logger.info("Start sending messages...");
+			while (line != null) {
+				System.out.println(line);
+                producer.send(new ProducerRecord<>(AppConfigs.topicName, i,line));
+				// read next line
+				line = reader.readLine();
+                i++;
+			}
+
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
         logger.info("Finished - Closing Kafka Producer.");
         producer.close();
-
     }
 }
