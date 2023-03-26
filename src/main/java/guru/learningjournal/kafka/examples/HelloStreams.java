@@ -37,10 +37,10 @@ public class HelloStreams {
         TimeWindows tumblingWindow = TimeWindows.of(Duration.ofSeconds(60));
         KTable<Windowed<Integer>, Long> transactionCount = kStream.groupByKey().windowedBy(tumblingWindow).count(Materialized.as("transaction-count"));
         //KTable<Windowed<Integer>, Long> responseTimeAvg = kStream.groupByKey().windowedBy(tumblingWindow).aggregate(null, null, null)   count(Materialized.as("response-time-avg"));
-        transactionCount.toStream().print(Printed.<Windowed<String>, Long>toSysOut().withLabel("transaction-count"));
+        transactionCount.toStream().print(Printed.<Windowed<Integer>, Long>toSysOut().withLabel("transaction-count"));
    
 /* 
-        protected static KTable<Long,Double>getRatingAverageTable(KStream<Long,Byte>ratings,  String avgRatingsTopicName,   SpecificAvroSerde<CountAndSum>countAndSumSerde){
+        protected static KTable<Long,Double>getRatingAverageTable ( KStream<Long,Byte>ratings,  String avgRatingsTopicName,   SpecificAvroSerde<CountAndSum>countAndSumSerde){
             // Grouping Ratings
             KGroupedStream<Long,Double>ratingsById=ratings.map((key,rating)->new KeyValue<>(rating.getMovieId(),rating.getRating())).groupByKey(with(Long(),Double()));
         
