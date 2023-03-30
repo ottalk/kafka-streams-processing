@@ -1,0 +1,6 @@
+Id,Status,Description
+123000020001,A,Approved
+123000025001,D,Declined
+123000022001,D,"Not Allowed"
+123000024001,D,"Technical Fault"
+123000026001,A,"Pre-Auth"
