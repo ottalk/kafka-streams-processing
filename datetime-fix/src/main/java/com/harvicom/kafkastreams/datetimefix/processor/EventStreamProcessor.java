@@ -1,4 +1,4 @@
-package com.harvicom.kafkastreams.lookuptable.processor;
+package com.harvicom.kafkastreams.datetimefix.processor;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 @Component
 public class EventStreamProcessor {
@@ -21,21 +18,6 @@ public class EventStreamProcessor {
 
     @PostConstruct
     public void streamTopology() {
-
-        BufferedReader reader;
-        try {
-			reader = new BufferedReader(new FileReader("Lookup.csv"));
-			String line = reader.readLine();
-
-			while (line != null) {
-				System.out.println(line);
-				// read next line
-				line = reader.readLine();
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 
         KStream<String, String> kStream = streamsBuilder.stream("streams-test-1", Consumed.with(Serdes.String(), Serdes.String()));

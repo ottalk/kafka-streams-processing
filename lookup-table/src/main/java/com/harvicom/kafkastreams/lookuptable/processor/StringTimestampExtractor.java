@@ -1,4 +1,4 @@
-package com.harvicom.kafkastreams.processor;
+package com.harvicom.kafkastreams.lookuptable.processor;
 
 import org.apache.kafka.streams.processor.TimestampExtractor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

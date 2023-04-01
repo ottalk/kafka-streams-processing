@@ -1,4 +1,4 @@
-package com.harvicom.kafkastreams.lookuptable.config;
+package com.harvicom.kafkastreams.datetimefix.config;
 
 import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;

@@ -1,7 +1,7 @@
-package com.harvicom.kafkastreams.processor;
+package com.harvicom.kafkastreams.lookuptable.processor;
 
 public class LookupTable {
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
  
     public String Id, Status, Description;
  
