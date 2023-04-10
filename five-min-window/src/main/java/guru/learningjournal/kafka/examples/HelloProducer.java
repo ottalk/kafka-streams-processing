@@ -44,7 +44,7 @@ public class HelloProducer {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
 
 		try {
-			reader = new BufferedReader(new FileReader("/Users/ottalk/Github/kafka-streams-processing/lookup-table/SampleTransactions.txt"));
+			reader = new BufferedReader(new FileReader("/Users/ottalk/Github/kafka-streams-processing/five-min-window/SampleTransactions.txt"));
 			String line = reader.readLine();
 
             int i=1;
