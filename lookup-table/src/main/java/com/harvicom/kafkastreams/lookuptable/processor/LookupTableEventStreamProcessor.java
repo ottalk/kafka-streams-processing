@@ -9,12 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 @Component
-public class EventStreamProcessor {
+public class LookupTableEventStreamProcessor {
 
     @Autowired
     private StreamsBuilder streamsBuilder;
@@ -22,6 +19,7 @@ public class EventStreamProcessor {
     @PostConstruct
     public void streamTopology() {
 
+        /*
         BufferedReader reader;
         try {
 			reader = new BufferedReader(new FileReader("Lookup.csv"));
@@ -36,7 +34,7 @@ public class EventStreamProcessor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+        */
 
         KStream<String, String> kStream = streamsBuilder.stream("streams-test-1", Consumed.with(Serdes.String(), Serdes.String()));
         //Consumed<String, String> consumerOptions = Consumed.with(Serdes.String(), Serdes.String()).withTimestampExtractor(new StringTimestampExtractor());

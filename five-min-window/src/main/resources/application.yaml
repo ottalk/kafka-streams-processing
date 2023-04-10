@@ -1,0 +1,7 @@
+spring:
+  kafka:
+    streams:
+      bootstrap-servers: "localhost:9092"
+      application-id: "spring-kafka-streams-lookuptable-id"
+
+  

@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
+
 public class HelloProducer {
     private static final Logger logger = LogManager.getLogger();
 
@@ -55,7 +57,7 @@ public class HelloProducer {
                 objectNode.put("TRANASACTION_TIME",timeStamp);
                 outputLine=node.toString();
                 System.out.println(outputLine);
-                //producer.send(new ProducerRecord<>(AppConfigs.topicName, i,line));
+                producer.send(new ProducerRecord<>(AppConfigs.topicName, i,outputLine));
 				// read next line
 				line = reader.readLine();
                 i++;

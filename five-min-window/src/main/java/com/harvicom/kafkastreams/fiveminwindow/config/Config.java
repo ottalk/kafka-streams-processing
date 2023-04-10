@@ -1,4 +1,4 @@
-package com.harvicom.kafkastreams.datetimefix.config;
+package com.harvicom.kafkastreams.fiveminwindow.config;
 
 import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -10,8 +10,6 @@ public class Config {
 
     @Bean
     public StreamsConfig streamsConfig(KafkaProperties properties){
-        //Map<String, Object> props = new HashMap<>();
-        //props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         return new StreamsConfig(properties.buildStreamsProperties());
     }
 }
