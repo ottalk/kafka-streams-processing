@@ -10,7 +10,10 @@ import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayInputStream;
 
 import javax.annotation.PostConstruct;
 
@@ -71,9 +74,10 @@ public class FiveMinWindowEventStreamProcessor {
                     /*
                     if (eventLastOfItskind) return null;
                     */
-                    //((ObjectNode)aggregate).put("MERCHANT_NO", aggregate.get("MERCHANT_NO").asText());
-                    //((ObjectNode)aggregate).put("DIV", aggregate.get("DIV").asText());
-                    //((ObjectNode)aggregate).put("COUNTRY", aggregate.get("COUNTRY").asText());
+                    //((ObjectNode)aggregate).put("WINDOW_START", key.getBytes().toString());
+                    ((ObjectNode)aggregate).put("MERCHANT_NO", value.get("MERCHANT_NO").asText());
+                    ((ObjectNode)aggregate).put("DIV", value.get("DIV").asText());
+                    ((ObjectNode)aggregate).put("COUNTRY", value.get("COUNTRY").asText());
                     ((ObjectNode)aggregate).put("count", aggregate.get("count").asLong() + 1);
                     ((ObjectNode)aggregate).put("sum", aggregate.get("sum").asDouble() + value.get("RESPONSE_TIME").asDouble());
                     ((ObjectNode)aggregate).put("max", Math.max(aggregate.get("max").asDouble(),value.get("RESPONSE_TIME").asDouble()));
@@ -83,9 +87,9 @@ public class FiveMinWindowEventStreamProcessor {
 
         
         KTable<String, JsonNode> average = countAndSum.mapValues((value -> {ObjectNode node = JsonNodeFactory.instance.objectNode();
-            //node.put("MERCHANT_NO", value.get("MERCHANT_NO").asText());
-            //node.put("DIV", value.get("DIV").asText());
-            //node.put("COUNTRY", value.get("COUNTRY").asText());
+            node.put("MERCHANT_NO", value.get("MERCHANT_NO").asText());
+            node.put("DIV", value.get("DIV").asText());
+            node.put("COUNTRY", value.get("COUNTRY").asText());
             node.put("count",value.get("count").asLong());
             node.put("max",value.get("max").asDouble());
             node.put("avg",value.get("sum").asDouble() / (double)value.get("count").asDouble());
@@ -94,38 +98,5 @@ public class FiveMinWindowEventStreamProcessor {
                 
         //average.to(Serdes.String(), jsonSerde, "streams-test-2");
         average.toStream().to("streams-test-3", Produced.with(Serdes.String(), jsonSerde));
-
-/*
- public void process(KStream<SensorKeyDTO, SensorDataDTO> stream) {
-
-        buildAggregateMetricsBySensor(stream)
-                .to(outputTopic, Produced.with(String(), new SensorAggregateMetricsSerde()));
-
-    }
-
-private KStream<String, SensorAggregateMetricsDTO> buildAggregateMetricsBySensor(KStream<SensorKeyDTO, SensorDataDTO> stream) {
-        return stream
-                .map((key, val) -> new KeyValue<>(val.getId(), val))
-                .groupByKey(Grouped.with(String(), new SensorDataSerde()))
-                .windowedBy(TimeWindows.of(Duration.ofMinutes(WINDOW_SIZE_IN_MINUTES)).grace(Duration.ofMillis(0)))
-                .aggregate(SensorAggregateMetricsDTO::new,
-                        (String k, SensorDataDTO v, SensorAggregateMetricsDTO va) -> aggregateData(v, va),
-                        buildWindowPersistentStore())
-                .suppress(Suppressed.untilWindowCloses(unbounded()))
-                .toStream()
-                .map((key, value) -> KeyValue.pair(key.key(), value));
-    }
-
-
-    private Materialized<String, SensorAggregateMetricsDTO, WindowStore<Bytes, byte[]>> buildWindowPersistentStore() {
-        return Materialized
-                .<String, SensorAggregateMetricsDTO, WindowStore<Bytes, byte[]>>as(WINDOW_STORE_NAME)
-                .withKeySerde(String())
-                .withValueSerde(new SensorAggregateMetricsSerde());
-    }
- */
-
-
-
     }
 }
