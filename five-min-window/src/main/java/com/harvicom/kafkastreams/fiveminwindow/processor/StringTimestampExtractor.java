@@ -3,10 +3,7 @@ package com.harvicom.kafkastreams.fiveminwindow.processor;
 import org.apache.kafka.streams.processor.TimestampExtractor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 
 public class StringTimestampExtractor implements TimestampExtractor {

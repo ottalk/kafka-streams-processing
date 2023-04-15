@@ -45,7 +45,6 @@ public class HelloProducer {
 			reader = new BufferedReader(new FileReader("/Users/ottalk/Github/kafka-streams-processing/lookup-table/SampleTransactions.txt"));
 			String line = reader.readLine();
 
-            int i=1;
             logger.info("Start sending messages...");
 			while (line != null) {
 
@@ -58,7 +57,6 @@ public class HelloProducer {
                 //producer.send(new ProducerRecord<>(AppConfigs.topicName, i,line));
 				// read next line
 				line = reader.readLine();
-                i++;
 			}
 
 			reader.close();
